@@ -18,4 +18,5 @@ y = data[:, 1]
 plt.plot(x, y)
 plt.xlabel('Fermi Radius N')
 plt.ylabel('S(k, N)')
+plt.savefig(f'{latest_file}.png')
 plt.show()
