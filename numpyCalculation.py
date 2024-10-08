@@ -35,7 +35,7 @@ filename = f'data/LuneResolvent-{current_time}.npy'
 
 # Save the function to a file
 k = np.array([5,7])
-x = np.arange(5_000, 10_000, 100)
+x = np.arange(5_000, 6_000, 100)
 y = [LuneResolvent(k, N=n) for n in tqdm(x, desc='Calculating LuneResolvent')]
 data = np.column_stack((x, y))
 np.save(filename, data)
