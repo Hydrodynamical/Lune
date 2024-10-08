@@ -1,7 +1,6 @@
 import numpy as np              # arrays
 import matplotlib.pyplot as plt # plotting
 from tqdm import tqdm           # loading bar
-from concurrent.futures import ProcessPoolExecutor, as_completed
 
 
 def is_in_lune_set(p, k, N):
@@ -11,7 +10,7 @@ def is_in_lune_set(p, k, N):
     return (np.linalg.norm(p) > N) and (np.linalg.norm(p - k) <= N)
 
 def generate_lune_set(k, N):
-    """Generate the lune set as a list of np.arrays.
+    """Generate the lune set as a list of np.arrays and the count of points in the lune set.
     """
     cutoff = N + np.max(np.abs(k))
     lune_set = []
@@ -23,16 +22,6 @@ def generate_lune_set(k, N):
                 lune_set.append(p)
                 count += 1
     return lune_set, count
-
-def count_lune_set(k,N):
-    count = 0
-    cutoff = N + np.max(np.abs(k))
-    for i in range(-cutoff, cutoff + 1, 1):
-        for j in range(-cutoff, cutoff + 1, 1):
-            p = np.array([i,j])
-            if is_in_lune_set(p, k, N):
-                count+=1
-    return count
 
 def LuneResolvent(k, N):
     result = 0.0
@@ -47,24 +36,11 @@ def LuneResolvent(k, N):
 
 # Plot the function
 k = np.array([5,7])
-
-def calculate_resolvent(n):
-    return LuneResolvent(k, N=n)
-
-x = np.arange(100, 5000, 50)
-
-# Use ProcessPoolExecutor for parallel computation
-with ProcessPoolExecutor() as executor:
-    # Submit tasks to the executor and wrap them in tqdm for progress tracking
-    futures = [executor.submit(calculate_resolvent, n) for n in x]
-    
-    # Use as_completed to process the results as they finish
-    results = []
-    for future in tqdm(as_completed(futures), total=len(x), desc="Calculating LuneResolvent"):
-        results.append(future.result())
-
-plt.plot(x, results)
+x = np.arange(5_000, 5_050, 10)
+y = [LuneResolvent(k, N=n) for n in tqdm(x, desc='Calculating LuneResolvent')]
+plt.plot(x, y)
 plt.xlabel('Fermi Radius N')
 plt.ylabel('S(k, N)')
-plt.show()
 plt.savefig('LuneResolvent.png')
+plt.show()
+
