@@ -1,7 +1,7 @@
 import numpy as np              # arrays
 import matplotlib.pyplot as plt # plotting
 from tqdm import tqdm           # loading bar
-
+import time                     # timestamp
 
 def is_in_lune_set(p, k, N):
     """Check if p \in R^2 is in the lune set 
@@ -34,13 +34,13 @@ def LuneResolvent(k, N):
 # returns 1.5707564620188683
 
 
-# Plot the function
+current_time = time.strftime("%Y-%m-%d-%H-%M-%S")
+filename = f'data/LuneResolvent-{current_time}.npy'
+
+# Save the function to a file
 k = np.array([5,7])
-x = np.arange(5_000, 5_050, 10)
+x = np.arange(100, 200, 10)
 y = [LuneResolvent(k, N=n) for n in tqdm(x, desc='Calculating LuneResolvent')]
-plt.plot(x, y)
-plt.xlabel('Fermi Radius N')
-plt.ylabel('S(k, N)')
-plt.savefig('LuneResolvent.png')
-plt.show()
+data = np.column_stack((x, y))
+np.save(filename, data)
 
