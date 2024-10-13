@@ -7,8 +7,8 @@ import matplotlib.pyplot as plt
 #####################
 # Simulation Params #
 #####################
-N = 110 # Fermi Radius ( \geq 100 )
-L = 6   # x lattice cutoff
+N = 300 # Fermi Radius ( \geq 100 )
+L = 4   # x lattice cutoff
 #####################
 
 # Create unique filename based on k, N, and current time
